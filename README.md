@@ -14,6 +14,7 @@ La especificación viva es el prototipo navegable [`reference/munia-fomento-prot
 |-----------|--------------|-----|
 | **Requerimientos** — SRS: alcance, actores, módulos, requisitos funcionales y no funcionales (con prioridad MoSCoW) | [Descargar .docx](docs/Requerimientos-MunIA-Fomento.docx) | [Ver / descargar PDF](docs/Requerimientos-MunIA-Fomento.pdf) |
 | **Diseño** — modelo de datos (diagramas ER), casos de uso y pantallas a nivel mockup | [Descargar .docx](docs/Diseno-MunIA-Fomento.docx) | [Ver / descargar PDF](docs/Diseno-MunIA-Fomento.pdf) |
+| **Procesos y flujos BPMN** — diagramas BPMN de todos los procesos (acceso y gobernanza, Ferias, Capacitación, Fondos) | [Descargar .docx](docs/Procesos-BPMN-MunIA-Fomento.docx) | [Ver / descargar PDF](docs/Procesos-BPMN-MunIA-Fomento.pdf) |
 
 > Demo navegable (GitHub Pages): **https://altkimia-gaas.github.io/munia-fomento/**
 
