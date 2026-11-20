@@ -8,6 +8,17 @@ La especificación viva es el prototipo navegable [`reference/munia-fomento-prot
 
 ---
 
+## Documentos
+
+| Documento | Word (.docx) | PDF |
+|-----------|--------------|-----|
+| **Requerimientos** — SRS: alcance, actores, módulos, requisitos funcionales y no funcionales (con prioridad MoSCoW) | [Descargar .docx](docs/Requerimientos-MunIA-Fomento.docx) | [Ver / descargar PDF](docs/Requerimientos-MunIA-Fomento.pdf) |
+| **Diseño** — modelo de datos (diagramas ER), casos de uso y pantallas a nivel mockup | [Descargar .docx](docs/Diseno-MunIA-Fomento.docx) | [Ver / descargar PDF](docs/Diseno-MunIA-Fomento.pdf) |
+
+> Demo navegable (GitHub Pages): **https://akadem-edtech.github.io/munia-fomento/**
+
+---
+
 ## Estado del build
 
 Construcción por fases siguiendo el orden del brief (§11). Estado actual:
