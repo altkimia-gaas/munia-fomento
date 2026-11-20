@@ -293,13 +293,60 @@ svg { stroke: currentColor; stroke-width: 2; fill: none; }
 .req-no { background: rgba(239,68,68,.12); } .req-no svg { stroke: #f87171; }
 .req-man { background: var(--bg4); color: var(--muted); font-size: 12px; }
 
-/* RESPONSIVE */
+/* ============================ RESPONSIVE ============================ */
+/* Tablet / pantallas medianas: densidad intermedia antes de colapsar. */
+@media (max-width: 1100px) {
+  .g4 { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(2, 1fr); }
+  .view { padding: 1.6rem; }
+  .topbar { padding-left: 1.6rem; padding-right: 1.6rem; }
+}
+
+/* Sidebar fuera de lienzo + hamburguesa (tablet vertical y menor). */
 @media (max-width: 860px) {
   .app { grid-template-columns: 1fr; }
-  .side { position: fixed; left: 0; top: 0; z-index: 100; width: 250px; transform: translateX(-100%); transition: transform .22s ease; }
+  .side { position: fixed; left: 0; top: 0; z-index: 100; width: 250px; transform: translateX(-100%); transition: transform .22s ease; box-shadow: 0 0 40px rgba(0,0,0,.4); }
   .side.open { transform: none; }
   .scrim.show { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 90; }
   .hamb { display: flex; }
-  .g2, .g3, .g4 { grid-template-columns: 1fr; }
+  /* Toda rejilla (incluidas las inline 1fr/… de Perfil, Selección, Config) a una columna. */
+  .grid, .g2, .g3, .g4 { grid-template-columns: 1fr !important; }
   .view, .topbar { padding-left: 1.1rem; padding-right: 1.1rem; }
+  .topbar > div:not(.topbar-r) { min-width: 0; }
+  .topbar h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+
+/* Teléfono: ajustes finos. */
+@media (max-width: 640px) {
+  .topbar { gap: .55rem; padding-top: .85rem; padding-bottom: .85rem; }
+  .topbar h1 { font-size: 16px; }
+  .crumb { font-size: 10px; }
+  .topbar-r { gap: .5rem; }
+  /* Sólo avatar en la barra: el nombre/rol ocupaba demasiado. */
+  .user-meta, .user-chevron { display: none; }
+  .user-chip { padding: 5px; border-radius: 50%; }
+  .notif-btn { width: 36px; height: 36px; }
+  /* Popovers nunca más anchos que la pantalla. */
+  .menu-pop { width: min(330px, calc(100vw - 22px)); }
+  .menu-pop.narrow { width: min(230px, calc(100vw - 22px)); }
+  .view { padding: 1.1rem; }
+
+  /* Tablas: scroll horizontal propio en vez de desbordar la página. */
+  .tbl { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; min-width: 100%; }
+
+  /* Evita el zoom automático de iOS al enfocar (se dispara con fuentes < 16px). */
+  .field input, .field select, .field textarea, .chat-input input { font-size: 16px; }
+
+  /* Ranking de selección: nº + nombre arriba; score y decisión debajo. */
+  .rank-row { grid-template-columns: 26px 1fr; gap: 6px 10px; }
+  .rank-row > :nth-child(3) { grid-column: 2; }
+  .rank-row > :nth-child(4) { grid-column: 2; text-align: left !important; }
+
+  /* Burbujas de chat un poco más anchas en pantallas chicas. */
+  .msg { max-width: 92%; }
+
+  /* Un poco menos de aire en modales, login y tarjetas. */
+  .modal { padding: 1.3rem; }
+  .auth-card { padding: 1.6rem; }
+  .card { padding: 1.15rem; }
 }
