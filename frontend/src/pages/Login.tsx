@@ -47,78 +47,89 @@ export function Login() {
   ];
 
   return (
-    <div className="auth-wrap" style={{ position: 'relative' }}>
-      <div style={{ position: 'absolute', top: 18, right: 18 }}><ThemeToggle /></div>
-      <div className="auth-card">
-        <div className="auth-hero"><FomentoHero /></div>
-        <div className="auth-brand">
-          {muni?.logoUrl
-            ? <img className="muni-logo" src={muni.logoUrl} alt={muni.nombre} />
-            : <div className="side-ico"><Icon name="shield" /></div>}
-          <div className="side-name"><span>Mun</span>IA Fomento</div>
-        </div>
-        {muni?.nombre && <div className="muni-name">{muni.nombre}</div>}
-        <p className="auth-bajada">Plataforma de fomento productivo municipal: ferias, capacitación y fondos para hacer crecer los emprendimientos de la comuna.</p>
-        <div className="auth-sub">{modoFuncionario ? 'Acceso funcionarios municipales' : 'Portal del emprendedor'}</div>
+    <div className="auth-split">
+      <div className="auth-toggle"><ThemeToggle /></div>
 
-        {error && <div className="alert alert-bad" style={{ marginBottom: '1rem' }}><Icon name="info" />{error}</div>}
-
-        {demo && (
-          <div style={{ marginBottom: '1.4rem' }}>
-            <div className="alert alert-info" style={{ marginBottom: 12 }}><Icon name="sparkle" />Demo interactiva · datos de ejemplo en tu navegador (no persisten). Entra con un clic:</div>
-            <div className="role-grid">
-              {DEMO_ROLES.map((r) => (
-                <button key={r.email} className="role-box" disabled={cargando} onClick={() => ingresar(r.email, 'demo1234')}>
-                  <div className="role-ico"><Icon name={r.email.includes('example') ? 'empr' : 'user'} /></div>
-                  <div className="role-txt">
-                    <div className="role-label">{r.label}</div>
-                    <div className="role-sub">{r.sub}</div>
-                  </div>
-                </button>
-              ))}
+      <aside className="auth-visual">
+        <div className="auth-visual-inner">
+          <div className="auth-brand-sm">
+            {muni?.logoUrl
+              ? <img className="muni-logo" src={muni.logoUrl} alt={muni.nombre} />
+              : <div className="side-ico"><Icon name="shield" /></div>}
+            <div className="auth-brand-txt">
+              <div className="side-name"><span>Mun</span>IA Fomento</div>
+              {muni?.nombre && <div className="muni-name">{muni.nombre}</div>}
             </div>
-            <div className="divider">o con correo y contraseña (demo1234)</div>
           </div>
-        )}
-
-        {claveUnica && (
-          <>
-            <a className="btn-p btn-block" href="/api/auth/clave-unica/start"><Icon name="shield" /> Ingresar con ClaveÚnica</a>
-            <div className="divider">o con tu correo</div>
-          </>
-        )}
-
-        <form onSubmit={enviar}>
-          <div className="field">
-            <label>Correo electrónico</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus placeholder="tu@correo.cl" />
-          </div>
-          <div className="field">
-            <label>Contraseña</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" />
-          </div>
-          <button className="btn-p btn-block" disabled={cargando}>
-            {cargando ? <span className="spinner" /> : <>Iniciar sesión <Icon name="back" style={{ transform: 'rotate(180deg)' }} /></>}
-          </button>
-        </form>
-
-        {!modoFuncionario && (
-          <>
-            <div className="divider">o</div>
-            <Link to="/registro" className="btn-g btn-block"><Icon name="plus" /> Crear mi cuenta de emprendedor</Link>
-          </>
-        )}
-
-        <div className="auth-foot">
-          {modoFuncionario ? (
-            <button className="um-item" style={{ justifyContent: 'center', color: 'var(--teal-light)' }} onClick={() => setModo(false)}>← Soy emprendedor</button>
-          ) : (
-            <button onClick={() => setModo(true)} style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 12.5 }}>
-              <Icon name="lock" size={13} style={{ verticalAlign: '-2px', marginRight: 5 }} />Acceso funcionarios municipales →
-            </button>
-          )}
+          <h1 className="auth-title">Fomento productivo<br />para la comuna</h1>
+          <p className="auth-bajada">Ferias, capacitación y fondos en un mismo lugar, para hacer crecer los emprendimientos del territorio.</p>
+          <div className="auth-art"><FomentoHero /></div>
         </div>
-      </div>
+      </aside>
+
+      <main className="auth-access">
+        <div className="auth-access-inner">
+          <div className="auth-sub">{modoFuncionario ? 'Acceso funcionarios municipales' : 'Portal del emprendedor'}</div>
+
+          {error && <div className="alert alert-bad" style={{ marginBottom: '1rem' }}><Icon name="info" />{error}</div>}
+
+          {demo && (
+            <div style={{ marginBottom: '1.4rem' }}>
+              <div className="alert alert-info" style={{ marginBottom: 12 }}><Icon name="sparkle" />Demo interactiva · datos de ejemplo en tu navegador (no persisten). Entra con un clic:</div>
+              <div className="role-grid">
+                {DEMO_ROLES.map((r) => (
+                  <button key={r.email} className="role-box" disabled={cargando} onClick={() => ingresar(r.email, 'demo1234')}>
+                    <div className="role-ico"><Icon name={r.email.includes('example') ? 'empr' : 'user'} /></div>
+                    <div className="role-txt">
+                      <div className="role-label">{r.label}</div>
+                      <div className="role-sub">{r.sub}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+              <div className="divider">o con correo y contraseña (demo1234)</div>
+            </div>
+          )}
+
+          {claveUnica && (
+            <>
+              <a className="btn-p btn-block" href="/api/auth/clave-unica/start"><Icon name="shield" /> Ingresar con ClaveÚnica</a>
+              <div className="divider">o con tu correo</div>
+            </>
+          )}
+
+          <form onSubmit={enviar}>
+            <div className="field">
+              <label>Correo electrónico</label>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="tu@correo.cl" />
+            </div>
+            <div className="field">
+              <label>Contraseña</label>
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" />
+            </div>
+            <button className="btn-p btn-block" disabled={cargando}>
+              {cargando ? <span className="spinner" /> : <>Iniciar sesión <Icon name="back" style={{ transform: 'rotate(180deg)' }} /></>}
+            </button>
+          </form>
+
+          {!modoFuncionario && (
+            <>
+              <div className="divider">o</div>
+              <Link to="/registro" className="btn-g btn-block"><Icon name="plus" /> Crear mi cuenta de emprendedor</Link>
+            </>
+          )}
+
+          <div className="auth-foot">
+            {modoFuncionario ? (
+              <button className="um-item" style={{ justifyContent: 'center', color: 'var(--teal-light)' }} onClick={() => setModo(false)}>← Soy emprendedor</button>
+            ) : (
+              <button onClick={() => setModo(true)} style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 12.5 }}>
+                <Icon name="lock" size={13} style={{ verticalAlign: '-2px', marginRight: 5 }} />Acceso funcionarios municipales →
+              </button>
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
