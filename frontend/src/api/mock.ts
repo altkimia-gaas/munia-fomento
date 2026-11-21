@@ -25,7 +25,9 @@ const RUBROS = [
 ];
 const aliasDe = (c?: string | null) => RUBROS.find((r) => r.codigoMaestro === c)?.alias ?? null;
 
-const tenant = { slug: 'demo', nombre: 'Municipio Demo', logoUrl: null as string | null, colorAccent: null as string | null, dominioCorreo: 'municipio.demo.cl' as string | null, modulosActivos: ['FERIAS', 'CAPACITACION', 'FONDOS'], consentVersion: '1.0' };
+// Marca del tenant demo: configuración (no hardcode de producto). El login y el
+// shell leen logoUrl/nombre desde /api/config, igual que en un municipio real.
+const tenant = { slug: 'demo', nombre: 'I. Municipalidad de Casablanca', logoUrl: (import.meta.env.BASE_URL + 'demo/casablanca-logo.jpeg') as string | null, colorAccent: null as string | null, dominioCorreo: 'casablanca.cl' as string | null, modulosActivos: ['FERIAS', 'CAPACITACION', 'FONDOS'], consentVersion: '1.0' };
 
 const usuarios: Usuario[] = [];
 const emps: Emp[] = [];
