@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Icon } from '../components/Icon';
+import { ThemeToggle } from '../components/ThemeToggle';
 import { api, ApiError } from '../api/client';
 import { useAuth } from '../auth/auth';
 
@@ -41,7 +42,8 @@ export function Login() {
   ];
 
   return (
-    <div className="auth-wrap">
+    <div className="auth-wrap" style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 18, right: 18 }}><ThemeToggle /></div>
       <div className="auth-card">
         <div className="auth-brand">
           <div className="side-ico"><Icon name="shield" /></div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate, NavLink } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Icon } from './Icon';
+import { ThemeToggle } from './ThemeToggle';
 import { useAuth, esRol } from '../auth/auth';
 import { api } from '../api/client';
 import { MODULOS, getModulo, seccionesDe } from '../nav';
@@ -150,6 +151,7 @@ export function Shell() {
             <div className="crumb">{crumb}</div>
           </div>
           <div className="topbar-r">
+            <ThemeToggle />
             <button className="notif-btn" onClick={abrirNotif} aria-label="Notificaciones">
               <Icon name="bell" />
               {(notif?.noLeidas ?? 0) > 0 && <span className="notif-dot" />}
