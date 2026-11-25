@@ -11,6 +11,7 @@ import { Plantillas } from './pages/admin/Plantillas';
 import { ConfigTenant } from './pages/admin/ConfigTenant';
 import { Perfil } from './pages/emprendedor/Perfil';
 import { MisDatos } from './pages/emprendedor/MisDatos';
+import { MiFicha } from './pages/emprendedor/MiFicha';
 import { Vitrina } from './pages/Vitrina';
 import { FichaEmprendedor } from './pages/FichaEmprendedor';
 import { FichaFeria } from './pages/FichaFeria';
@@ -54,6 +55,7 @@ export function App() {
             <Route index element={<Hub />} />
             <Route path="perfil" element={<Perfil />} />
             <Route path="datos" element={<MisDatos />} />
+            <Route path="mi-ficha" element={<MiFicha />} />
             <Route path="admin/usuarios" element={<Usuarios />} />
             <Route path="admin/plantillas" element={<Plantillas />} />
             <Route path="admin/config" element={<ConfigTenant />} />

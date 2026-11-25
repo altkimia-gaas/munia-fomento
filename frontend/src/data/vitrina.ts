@@ -182,3 +182,48 @@ export const CURSOS: Curso[] = [
 export const getEmprendedor = (id: string) => EMPRENDEDORES.find((e) => e.id === id);
 export const getFeria = (id: string) => FERIAS.find((f) => f.id === id);
 export const getCurso = (id: string) => CURSOS.find((c) => c.id === id);
+
+/* ── Edición de la ficha (demo): persiste en el navegador; en producción es la API ── */
+const LS_KEY = 'munia-vitrina-emp';
+export const slugify = (s: string) =>
+  s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+function loadOverrides(): Record<string, Emprendedor> {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch { return {}; }
+}
+// Hidrata al cargar el módulo: aplica lo editado sobre los datos de ejemplo.
+(() => {
+  const ov = loadOverrides();
+  for (const id of Object.keys(ov)) {
+    const i = EMPRENDEDORES.findIndex((e) => e.id === id);
+    if (i >= 0) EMPRENDEDORES[i] = ov[id]; else EMPRENDEDORES.push(ov[id]);
+  }
+})();
+
+export function saveEmprendedor(e: Emprendedor) {
+  const i = EMPRENDEDORES.findIndex((x) => x.id === e.id);
+  if (i >= 0) EMPRENDEDORES[i] = e; else EMPRENDEDORES.push(e);
+  try { const ov = loadOverrides(); ov[e.id] = e; localStorage.setItem(LS_KEY, JSON.stringify(ov)); } catch { /* modo privado */ }
+}
+
+export function blankEmprendedor(nombre: string, titular = '', rubro = '', sector = ''): Emprendedor {
+  return {
+    id: slugify(nombre) || 'mi-emprendimiento', nombre, titular, rubro, sector, rep: 0, anios: 0, verificado: false,
+    resumen: '', historia: '', img: '', galeria: [], productos: [],
+    comercial: { pagos: [], despacho: '', minimo: '', horario: '', promo: '' },
+    contacto: { whatsapp: '', instagram: '', correo: '', direccion: '' }, ferias: [],
+  };
+}
+
+/** Ficha del emprendedor logueado, por nombre de emprendimiento (existente o nueva). */
+export function fichaDe(nombreEmprendimiento: string): Emprendedor {
+  return EMPRENDEDORES.find((e) => e.nombre === nombreEmprendimiento) ?? blankEmprendedor(nombreEmprendimiento);
+}
+
+/** Banco de fotos de ejemplo para la galería/catálogo en el demo. */
+export const FOTOS_DEMO = [
+  '1781947486936-8ce638c5ede9', '1777892505702-86b4e422d33e', '1763795258711-f4e07b4faf10',
+  '1791436105236-f4d94f5e7928', '1781358463802-219111e5e0ae', '1752401984784-74bb3b095745',
+  '1760727467662-5f0943d196a8', '1771148887605-ef0a11c91bb9', '1789544115602-292c9074f71a',
+  '1768321481665-b40705ab11ce', '1775919422010-a363264f344b',
+].map((id) => ph(id));

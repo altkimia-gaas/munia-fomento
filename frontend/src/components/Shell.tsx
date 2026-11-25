@@ -67,6 +67,7 @@ export function Shell() {
   let titulo = 'Inicio';
   let crumb = 'MunIA Fomento';
   if (admin) { titulo = seccion === 'plantillas' ? 'Plantillas de notificación' : seccion === 'config' ? 'Configuración del municipio' : 'Gestión de usuarios'; crumb = 'Administración del sistema'; }
+  else if (moduloId === 'mi-ficha') { titulo = 'Mi ficha pública'; crumb = 'Mi cuenta'; }
   else if (moduloId === 'perfil') { titulo = 'Mi perfil'; crumb = 'Mi cuenta'; }
   else if (moduloId === 'datos') { titulo = 'Privacidad y mis datos'; crumb = 'Mi cuenta'; }
   else if (modulo) {
@@ -109,6 +110,7 @@ export function Shell() {
                 <>
                   <div className="side-group">Mi cuenta</div>
                   <NavLink to="/app" end className={({ isActive }) => `side-link ${isActive ? 'on' : ''}`}><Icon name="dash" /> Inicio</NavLink>
+                  <NavLink to="/app/mi-ficha" className={({ isActive }) => `side-link ${isActive ? 'on' : ''}`}><Icon name="feria" /> Mi ficha pública</NavLink>
                   <NavLink to="/app/perfil" className={({ isActive }) => `side-link ${isActive ? 'on' : ''}`}><Icon name="user" /> Mi perfil</NavLink>
                   <NavLink to="/app/datos" className={({ isActive }) => `side-link ${isActive ? 'on' : ''}`}><Icon name="shield" /> Mis datos</NavLink>
                 </>
