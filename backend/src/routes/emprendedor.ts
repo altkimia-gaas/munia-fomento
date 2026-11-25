@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
+import { Prisma } from '@prisma/client';
 import { prisma } from '../db.js';
 import { auditar } from '../lib/audit.js';
 import { requireAuth, requireAcceso, exigirPrincipal } from '../plugins/auth.js';
@@ -15,6 +16,27 @@ const perfilSchema = z.object({
   rubroId: z.string().optional().nullable(),
   etapa: z.enum(['idea', 'menos_2_anios', 'consolidado']).optional(),
   documentos: z.array(z.string().max(120)).max(20).optional(),
+});
+
+const productoSchema = z.object({
+  nombre: z.string().max(80), precio: z.number().int().min(0).max(100_000_000), desc: z.string().max(240), img: z.string().max(600),
+});
+const fichaSchema = z.object({
+  nombre: z.string().max(120).optional(),
+  rubro: z.string().max(60).optional(),
+  sector: z.string().max(80).optional(),
+  resumen: z.string().max(240).optional(),
+  historia: z.string().max(2000).optional(),
+  img: z.string().max(600).optional(),
+  galeria: z.array(z.string().max(600)).max(24).optional(),
+  productos: z.array(productoSchema).max(60).optional(),
+  comercial: z.object({
+    pagos: z.array(z.string().max(40)).max(12), despacho: z.string().max(240), minimo: z.string().max(160),
+    horario: z.string().max(160), promo: z.string().max(200).optional(),
+  }).optional(),
+  contacto: z.object({
+    whatsapp: z.string().max(40), instagram: z.string().max(80), correo: z.string().max(160), direccion: z.string().max(200),
+  }).optional(),
 });
 
 export async function emprendedorRoutes(app: FastifyInstance): Promise<void> {
@@ -85,6 +107,33 @@ export async function emprendedorRoutes(app: FastifyInstance): Promise<void> {
     const emp = await prisma.emprendedor.update({ where: { id: emprendedorId }, data });
     await auditar(prisma, { tenantId, usuarioId, accion: 'emprendedor.rectificar', entidad: 'Emprendedor', entidadId: emprendedorId, meta: { campos: Object.keys(data) } });
     return { perfil: emp, completitud: calcularCompletitud(emp) };
+  });
+
+  // ── Ficha pública de la vitrina (leer) ──────────────────────────────────
+  app.get('/api/emprendedor/ficha', guardEmp, async (req) => {
+    const { emprendedorId } = exigirEmprendedor(req);
+    const emp = await prisma.emprendedor.findUniqueOrThrow({
+      where: { id: emprendedorId }, include: { rubro: { select: { alias: true } } },
+    });
+    const base = {
+      nombre: emp.nombreEmprendimiento, rubro: emp.rubro?.alias ?? '', sector: emp.localidad ?? '',
+      resumen: emp.descripcion ?? '', historia: '', img: '', galeria: [] as string[], productos: [] as unknown[],
+      comercial: { pagos: [] as string[], despacho: '', minimo: '', horario: '', promo: '' },
+      contacto: { whatsapp: emp.telefono ?? '', instagram: '', correo: '', direccion: emp.localidad ?? '' },
+    };
+    const guardada = (emp.fichaPublica ?? null) as Record<string, unknown> | null;
+    return { ficha: guardada ? { ...base, ...guardada } : base };
+  });
+
+  // ── Ficha pública de la vitrina (editar) ────────────────────────────────
+  app.patch('/api/emprendedor/ficha', guardEmp, async (req) => {
+    const { usuarioId, tenantId, emprendedorId } = exigirEmprendedor(req);
+    const data = fichaSchema.parse(req.body);
+    const emp = await prisma.emprendedor.update({
+      where: { id: emprendedorId }, data: { fichaPublica: data as unknown as Prisma.InputJsonValue },
+    });
+    await auditar(prisma, { tenantId, usuarioId, accion: 'emprendedor.ficha.actualizar', entidad: 'Emprendedor', entidadId: emprendedorId, meta: { campos: Object.keys(data) } });
+    return { ficha: emp.fichaPublica };
   });
 
   // ── Exportar mis datos (derecho ARCO: portabilidad) ─────────────────────

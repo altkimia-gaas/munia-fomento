@@ -3,6 +3,7 @@
  * Reproduce los endpoints reales contra datos semilla en memoria. NO persiste.
  * ========================================================================== */
 import { ApiError } from './ApiError';
+import { fichaDe, saveEmprendedor, slugify } from '../data/vitrina';
 
 // ─── utilidades ──────────────────────────────────────────────────────────────
 let SEQ = 1000;
@@ -241,6 +242,14 @@ function route(method: string, s: string[], q: URLSearchParams, b: Record<string
     const conRep = new Set(reportes.filter((r) => r.empId === e.id).map((r) => r.feriaId));
     const pend = adminCerr.filter((x) => !conRep.has(x.feriaId)).map((x) => ({ id: x.feriaId, nombre: feriaById(x.feriaId)!.nombre }));
     return { emprendedor: { nombre: e.nombreEmprendimiento, repScore: e.repScore, feriasCumplidas: e.feriasCumplidas, feriasTotales: e.feriasTotales, esNovato, estadoTexto: esNovato ? 'Emprendedor nuevo · sin historial aún' : `Reputación ${e.repScore} · cumplió ${e.feriasCumplidas} de ${e.feriasTotales} ferias` }, completitud: c, feriasAbiertas: abiertas, reportesPendientes: pend };
+  }
+  if (p === 'emprendedor/ficha' && method === 'GET') { const e = miEmp(); return { ficha: fichaDe(e.nombreEmprendimiento) }; }
+  if (p === 'emprendedor/ficha' && method === 'PATCH') {
+    const e = miEmp();
+    const base = fichaDe(e.nombreEmprendimiento);
+    const merged = { ...base, ...(b as object), id: base.id || slugify(e.nombreEmprendimiento) } as typeof base;
+    saveEmprendedor(merged);
+    return { ficha: merged };
   }
   if (p === 'emprendedor/perfil' && method === 'GET') { const e = miEmp(); const u = usuarioDeEmp(e.id); return { perfil: perfilEmp(e, u), completitud: completitud(e) }; }
   if (p === 'emprendedor/perfil' && method === 'PATCH') {

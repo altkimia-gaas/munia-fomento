@@ -1,24 +1,43 @@
-import { useState, type ReactNode } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { Icon } from '../../components/Icon';
 import { useAuth } from '../../auth/auth';
-import { fichaDe, saveEmprendedor, FOTOS_DEMO, type Emprendedor, type Producto } from '../../data/vitrina';
+import { api } from '../../api/client';
+import { FOTOS_DEMO, slugify, type Emprendedor, type Producto } from '../../data/vitrina';
 
 const clone = (e: Emprendedor): Emprendedor => JSON.parse(JSON.stringify(e));
 const PAGOS = ['Efectivo', 'Transferencia', 'Débito / Crédito', 'WebPay', 'Mercado Pago'];
 
 export function MiFicha() {
   const { usuario } = useAuth();
-  const nombreEmp = usuario?.emprendedor?.nombreEmprendimiento;
-  const [f, setF] = useState<Emprendedor>(() => clone(fichaDe(nombreEmp ?? 'Mi emprendimiento')));
-  const [guardado, setGuardado] = useState(false);
-  const esNueva = f.productos.length === 0 && !f.historia;
+  const esEmp = !!usuario?.emprendedor;
 
-  if (!usuario?.emprendedor) {
+  const { data: cargada } = useQuery({
+    queryKey: ['mi-ficha'],
+    queryFn: () => api.get<{ ficha: Emprendedor }>('/api/emprendedor/ficha').then((r) => r.ficha),
+    enabled: esEmp,
+  });
+  const [f, setF] = useState<Emprendedor | null>(null);
+  const [guardado, setGuardado] = useState(false);
+  useEffect(() => { if (cargada) setF(clone(cargada)); }, [cargada]);
+
+  const guardarMut = useMutation({
+    mutationFn: (ficha: Emprendedor) => api.patch('/api/emprendedor/ficha', ficha),
+    onSuccess: () => setGuardado(true),
+  });
+
+  if (!esEmp) {
     return <div className="view"><div className="empty"><Icon name="lock" /><h4>Sólo para emprendedores</h4><p>Esta sección permite editar tu ficha pública de la vitrina.</p></div></div>;
   }
+  if (!f) {
+    return <div className="view"><div className="center-screen" style={{ minHeight: 220 }}><span className="spinner" style={{ borderTopColor: 'var(--teal)', width: 26, height: 26 }} /></div></div>;
+  }
 
-  const set = (patch: Partial<Emprendedor>) => { setF((p) => ({ ...p, ...patch })); setGuardado(false); };
+  const fid = f.id || slugify(f.nombre) || 'mi-emprendimiento';
+  const esNueva = f.productos.length === 0 && !f.historia;
+
+  const set = (patch: Partial<Emprendedor>) => { setF({ ...f, ...patch }); setGuardado(false); };
   const setCom = (patch: Partial<Emprendedor['comercial']>) => set({ comercial: { ...f.comercial, ...patch } });
   const setCon = (patch: Partial<Emprendedor['contacto']>) => set({ contacto: { ...f.contacto, ...patch } });
   const togglePago = (p: string) => setCom({ pagos: f.comercial.pagos.includes(p) ? f.comercial.pagos.filter((x) => x !== p) : [...f.comercial.pagos, p] });
@@ -31,10 +50,9 @@ export function MiFicha() {
   const delProd = (i: number) => set({ productos: f.productos.filter((_, idx) => idx !== i) });
 
   const guardar = () => {
-    const limpio: Emprendedor = { ...f, img: f.img || f.galeria[0] || FOTOS_DEMO[0], resumen: f.resumen || f.historia.slice(0, 90) };
-    saveEmprendedor(limpio);
+    const limpio: Emprendedor = { ...f, id: fid, img: f.img || f.galeria[0] || FOTOS_DEMO[0], resumen: f.resumen || f.historia.slice(0, 90) };
     setF(clone(limpio));
-    setGuardado(true);
+    guardarMut.mutate(limpio);
   };
 
   const Fld = ({ label, children }: { label: string; children: ReactNode }) => (
@@ -49,12 +67,12 @@ export function MiFicha() {
           <p>Todo lo que edites aquí se muestra en tu ficha de la vitrina, para que la comuna te conozca, te compre y te siga.</p>
         </div>
         <div style={{ display: 'flex', gap: '.6rem' }}>
-          <Link to={`/emprendedor/${f.id}`} className="btn-g" target="_blank"><Icon name="compass" /> Ver mi ficha</Link>
-          <button className="btn-p" onClick={guardar}><Icon name="check" /> Guardar</button>
+          <Link to={`/emprendedor/${fid}`} className="btn-g" target="_blank"><Icon name="compass" /> Ver mi ficha</Link>
+          <button className="btn-p" onClick={guardar} disabled={guardarMut.isPending}>{guardarMut.isPending ? <span className="spinner" /> : <><Icon name="check" /> Guardar</>}</button>
         </div>
       </div>
 
-      {guardado && <div className="alert alert-info" style={{ marginBottom: '1.2rem' }}><Icon name="check" /> Ficha guardada. Ya está publicada en tu <Link to={`/emprendedor/${f.id}`} target="_blank" style={{ color: 'var(--teal-light)', fontWeight: 600 }}>ficha pública →</Link></div>}
+      {guardado && <div className="alert alert-info" style={{ marginBottom: '1.2rem' }}><Icon name="check" /> Ficha guardada. Ya está publicada en tu <Link to={`/emprendedor/${fid}`} target="_blank" style={{ color: 'var(--teal-light)', fontWeight: 600 }}>ficha pública →</Link></div>}
       {esNueva && !guardado && <div className="alert alert-info" style={{ marginBottom: '1.2rem' }}><Icon name="sparkle" /> Aún no tienes ficha. Complétala para aparecer en la vitrina de la comuna.</div>}
 
       <div className="grid" style={{ gridTemplateColumns: '1.5fr 1fr', alignItems: 'start' }}>
@@ -125,7 +143,7 @@ export function MiFicha() {
             <Fld label="Dirección"><input value={f.contacto.direccion} onChange={(e) => setCon({ direccion: e.target.value })} placeholder="Calle y número, Casablanca" /></Fld>
           </section>
 
-          <button className="btn-p btn-block" onClick={guardar}><Icon name="check" /> Guardar y publicar</button>
+          <button className="btn-p btn-block" onClick={guardar} disabled={guardarMut.isPending}><Icon name="check" /> Guardar y publicar</button>
         </div>
       </div>
     </div>

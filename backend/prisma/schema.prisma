@@ -179,6 +179,8 @@ model Emprendedor {
   feriasTotales        Int       @default(0)
   // Documentos declarados (resolución sanitaria, inicio actividades, etc.)
   documentos           String[]  @default([])
+  // Ficha pública de la vitrina: galería, catálogo (precios), condiciones comerciales y contacto
+  fichaPublica         Json?
   // Consentimiento Ley 21.719 (explícito, no pre-marcado)
   consentVersion       String?
   consentFecha         DateTime?
