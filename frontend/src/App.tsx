@@ -11,6 +11,7 @@ import { Plantillas } from './pages/admin/Plantillas';
 import { ConfigTenant } from './pages/admin/ConfigTenant';
 import { Perfil } from './pages/emprendedor/Perfil';
 import { MisDatos } from './pages/emprendedor/MisDatos';
+import { Vitrina } from './pages/Vitrina';
 
 function Protegido() {
   const { usuario, cargando } = useAuth();
@@ -39,6 +40,7 @@ export function App() {
           <Route path="/registro" element={<Registro />} />
         </Route>
         <Route path="/activar" element={<Activar />} />
+        <Route path="/vitrina" element={<Vitrina />} />
 
         <Route element={<Protegido />}>
           <Route path="/app" element={<Shell />}>
