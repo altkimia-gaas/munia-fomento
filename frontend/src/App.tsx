@@ -12,6 +12,9 @@ import { ConfigTenant } from './pages/admin/ConfigTenant';
 import { Perfil } from './pages/emprendedor/Perfil';
 import { MisDatos } from './pages/emprendedor/MisDatos';
 import { Vitrina } from './pages/Vitrina';
+import { FichaEmprendedor } from './pages/FichaEmprendedor';
+import { FichaFeria } from './pages/FichaFeria';
+import { FichaCurso } from './pages/FichaCurso';
 
 function Protegido() {
   const { usuario, cargando } = useAuth();
@@ -42,6 +45,9 @@ export function App() {
         <Route path="/activar" element={<Activar />} />
         <Route path="/" element={<Vitrina />} />
         <Route path="/vitrina" element={<Vitrina />} />
+        <Route path="/emprendedor/:id" element={<FichaEmprendedor />} />
+        <Route path="/feria/:id" element={<FichaFeria />} />
+        <Route path="/curso/:id" element={<FichaCurso />} />
 
         <Route element={<Protegido />}>
           <Route path="/app" element={<Shell />}>
