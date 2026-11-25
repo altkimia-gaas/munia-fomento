@@ -269,8 +269,39 @@ svg { stroke: currentColor; stroke-width: 2; fill: none; }
 .vz-foot-links { display: flex; gap: 1.2rem; align-items: center; }
 .vz-foot-links a { color: var(--teal-light); font-weight: 500; font-size: 13px; }
 
+.vz-hero-aud { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin: -.6rem 0 1.6rem; font-family: 'DM Mono', monospace; }
+.vz-hero-aud svg { stroke: var(--teal-light); vertical-align: -2px; }
+
+/* Franja "qué ofrece" — 3 módulos */
+.vz-mods { background: var(--bg2); border-bottom: .5px solid var(--border); }
+.vz-mods-inner { max-width: 1180px; margin: 0 auto; padding: 3rem 1.6rem; }
+.vz-mods-inner > h2 { font-size: 24px; font-weight: 600; letter-spacing: -.4px; text-align: center; }
+.vz-mods-sub { text-align: center; color: var(--muted); font-size: 13.5px; margin: 6px 0 2rem; }
+.vz-mods-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+.vz-mod { background: var(--bg1); border: .5px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+.vz-mod-ico { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; background: color-mix(in srgb, var(--m, var(--teal)) 15%, transparent); }
+.vz-mod-ico svg { width: 24px; height: 24px; stroke: var(--m, var(--teal)); }
+.vz-mod h3 { font-size: 16px; font-weight: 600; }
+.vz-mod p { color: var(--muted); font-size: 13px; line-height: 1.55; margin-top: 6px; }
+.m-ferias { --m: var(--mod-ferias); }
+.m-cap { --m: var(--mod-cap); }
+.m-fondos { --m: var(--mod-fondos); }
+
+/* Doble llamado a la acción por tipo de usuario */
+.vz-cta2 { max-width: 1180px; margin: 0 auto; padding: 1rem 1.6rem 3rem; }
+.vz-cta2-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+.vz-cta2-card { border: .5px solid var(--border); border-radius: 16px; padding: 1.8rem; background: var(--bg2); }
+.vz-cta2-card.accent { border-color: color-mix(in srgb, var(--teal) 40%, var(--border)); background: linear-gradient(140deg, color-mix(in srgb, var(--teal) 10%, var(--bg2)), var(--bg2)); }
+.vz-cta2-ico { width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: rgba(33,150,243,.12); margin-bottom: .9rem; }
+.vz-cta2-ico svg { width: 21px; height: 21px; stroke: var(--teal-light); }
+.vz-cta2-card h3 { font-size: 18px; font-weight: 600; letter-spacing: -.3px; }
+.vz-cta2-card p { color: var(--muted); font-size: 13.5px; line-height: 1.55; margin: 6px 0 1.2rem; max-width: 360px; }
+
+@media (max-width: 860px) {
+  .vz-mods-grid, .vz-cta2-inner { grid-template-columns: 1fr; }
+}
 @media (max-width: 640px) {
-  .vz-nav { display: none; }
+  .vz-nav, .vz-hide-sm { display: none; }
   .vz-hero { min-height: 50vh; }
   .vz-sec { padding: 2.2rem 1.1rem; }
 }

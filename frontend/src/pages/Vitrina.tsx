@@ -53,13 +53,15 @@ export function Vitrina() {
           </div>
         </div>
         <nav className="vz-nav">
+          <a href="#como-funciona">Cómo funciona</a>
           <a href="#emprendedores">Emprendedores</a>
           <a href="#ferias">Ferias</a>
           <a href="#capacitaciones">Capacitaciones</a>
         </nav>
         <div className="vz-actions">
           <ThemeToggle />
-          <Link to="/login" className="btn-g btn-sm"><Icon name="lock" size={14} /> Ingresar</Link>
+          <Link to="/registro" className="btn-g btn-sm vz-hide-sm"><Icon name="plus" size={14} /> Crear cuenta</Link>
+          <Link to="/login" className="btn-p btn-sm"><Icon name="lock" size={14} /> Ingresar</Link>
         </div>
       </header>
 
@@ -69,9 +71,34 @@ export function Vitrina() {
           <div className="chip c-info" style={{ marginBottom: 14 }}>Fomento productivo</div>
           <h1>El talento de la comuna, en un solo lugar</h1>
           <p>Conoce a nuestros emprendedores, participa en las ferias y súmate a las capacitaciones del municipio.</p>
+          <p className="vz-hero-aud"><Icon name="empr" size={14} /> Los emprendedores participan · <Icon name="shield" size={14} /> el municipio gestiona</p>
           <div className="vz-hero-cta">
             <Link to="/registro" className="btn-p"><Icon name="plus" /> Crear mi cuenta de emprendedor</Link>
             <a href="#emprendedores" className="btn-g">Ver emprendedores</a>
+          </div>
+        </div>
+      </section>
+
+      <section className="vz-mods" id="como-funciona">
+        <div className="vz-mods-inner">
+          <h2>Todo el fomento, en una plataforma</h2>
+          <p className="vz-mods-sub">Tres módulos para acompañar a los emprendimientos de la comuna.</p>
+          <div className="vz-mods-grid">
+            <div className="vz-mod m-ferias">
+              <div className="vz-mod-ico"><Icon name="feria" /></div>
+              <h3>Ferias</h3>
+              <p>Postula a las ferias de la comuna y vende tus productos al público.</p>
+            </div>
+            <div className="vz-mod m-cap">
+              <div className="vz-mod-ico"><Icon name="cap" /></div>
+              <h3>Capacitación</h3>
+              <p>Inscríbete en cursos y talleres gratuitos y obtén tu certificado.</p>
+            </div>
+            <div className="vz-mod m-fondos">
+              <div className="vz-mod-ico"><Icon name="money" /></div>
+              <h3>Fondos</h3>
+              <p>Descubre fondos de financiamiento y postula a los que calzan contigo.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -145,6 +172,23 @@ export function Vitrina() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="vz-cta2">
+        <div className="vz-cta2-inner">
+          <div className="vz-cta2-card accent">
+            <div className="vz-cta2-ico"><Icon name="empr" /></div>
+            <h3>¿Tienes un emprendimiento?</h3>
+            <p>Crea tu cuenta y participa en ferias, capacitaciones y fondos de la comuna.</p>
+            <Link to="/registro" className="btn-p"><Icon name="plus" /> Crear mi cuenta</Link>
+          </div>
+          <div className="vz-cta2-card">
+            <div className="vz-cta2-ico"><Icon name="shield" /></div>
+            <h3>¿Eres funcionario municipal?</h3>
+            <p>Ingresa para gestionar los programas de fomento de tu comuna.</p>
+            <Link to="/login" className="btn-g"><Icon name="lock" /> Ingresar</Link>
+          </div>
         </div>
       </section>
 

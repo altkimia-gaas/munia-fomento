@@ -65,7 +65,7 @@ export function Login() {
           <h1 className="auth-title">Fomento productivo<br />para la comuna</h1>
           <p className="auth-bajada">Ferias, capacitación y fondos en un mismo lugar, para hacer crecer los emprendimientos del territorio.</p>
           <div className="auth-art"><FomentoHero /></div>
-          <Link to="/vitrina" className="auth-vitrina-link"><Icon name="compass" size={15} /> Ver la vitrina pública de la comuna →</Link>
+          <Link to="/" className="auth-vitrina-link"><Icon name="back" size={15} /> Volver a la vitrina pública</Link>
         </div>
       </aside>
 

@@ -40,6 +40,7 @@ export function App() {
           <Route path="/registro" element={<Registro />} />
         </Route>
         <Route path="/activar" element={<Activar />} />
+        <Route path="/" element={<Vitrina />} />
         <Route path="/vitrina" element={<Vitrina />} />
 
         <Route element={<Protegido />}>
