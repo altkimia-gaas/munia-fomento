@@ -39,6 +39,7 @@ export function Login() {
   const enviar = (e: React.FormEvent) => { e.preventDefault(); void ingresar(email, password); };
 
   const DEMO_ROLES = [
+    { label: 'Antonio Villalobos', sub: 'Administrador · Casablanca', email: 'antonio.villalobos@municipalidadcasablanca.cl' },
     { label: 'Administradora', sub: 'Daniela · todos los módulos', email: 'admin@municipio.demo.cl' },
     { label: 'Evaluadora', sub: 'Claudia · Ferias', email: 'evaluador@municipio.demo.cl' },
     { label: 'Jefatura', sub: 'Sergio · sólo dashboards', email: 'jefatura@municipio.demo.cl' },

@@ -39,6 +39,7 @@ function nuevoEmp(nombre: string, email: string, rut: string, emp: Omit<Emp, 'id
   usuarios.push({ id: uid, tipo: 'EMPRENDEDOR', nombre, email, rut, estado: 'ACTIVO', empId: eid, createdAt: '2026-02-01T12:00:00Z' });
   emps.push({ ...emp, id: eid, usuarioId: uid });
 }
+nuevoFunc('Antonio Villalobos', 'antonio.villalobos@municipalidadcasablanca.cl', 'Administrador de Fomento', 'ADMINISTRADOR', ['FERIAS', 'CAPACITACION', 'FONDOS']);
 nuevoFunc('Daniela Rojas', 'admin@municipio.demo.cl', 'Encargada de Fomento Productivo', 'ADMINISTRADOR', ['FERIAS', 'CAPACITACION', 'FONDOS']);
 nuevoFunc('Claudia Pérez', 'evaluador@municipio.demo.cl', 'Evaluadora en terreno', 'EVALUADOR', ['FERIAS']);
 nuevoFunc('Marco Núñez', 'evaluador2@municipio.demo.cl', 'Evaluador en terreno', 'EVALUADOR', ['FERIAS']);
